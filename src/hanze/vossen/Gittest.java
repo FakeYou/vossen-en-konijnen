@@ -7,7 +7,7 @@ public class Gittest
 		test();
 	}
 	
-	public void test()
+	public static void test()
 	{
 		System.out.println("test");
 	}
