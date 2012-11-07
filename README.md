@@ -1,4 +1,4 @@
 vossen-en-konijnen
 ==================
 
-Hello world!
+Hello world
