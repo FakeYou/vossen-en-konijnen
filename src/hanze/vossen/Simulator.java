@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Color;
 
+import ui.main.Main;
+
 /**
  * A simple predator-prey simulator, based on a rectangular field
  * containing rabbits and foxes.
@@ -26,9 +28,9 @@ public class Simulator
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
 
     // List of animals in the field.
-    private List<Animal> animals;
+    public List<Animal> animals;
     // The current state of the field.
-    private Field field;
+    public Field field;
     // The current step of the simulation.
     private int step;
     // A graphical view of the simulation.
@@ -60,9 +62,11 @@ public class Simulator
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
+        /*
         view = new SimulatorView(depth, width);
         view.setColor(Rabbit.class, Color.ORANGE);
         view.setColor(Fox.class, Color.BLUE);
+        */
         
         // Setup a valid starting point.
         reset();
@@ -84,7 +88,7 @@ public class Simulator
      */
     public void simulate(int numSteps)
     {
-        for(int step = 1; step <= numSteps && view.isViable(field); step++) {
+    	for(int step = 1; step <= numSteps; step++) {
             simulateOneStep();
         }
     }
@@ -112,7 +116,7 @@ public class Simulator
         // Add the newly born foxes and rabbits to the main lists.
         animals.addAll(newAnimals);
 
-        view.showStatus(step, field);
+        Main.repaint();
     }
         
     /**
@@ -125,7 +129,7 @@ public class Simulator
         populate();
         
         // Show the starting state in the view.
-        view.showStatus(step, field);
+        //view.showStatus(step, field);
     }
     
     /**

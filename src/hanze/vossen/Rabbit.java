@@ -1,5 +1,6 @@
 package hanze.vossen;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Random;
 
@@ -41,6 +42,8 @@ public class Rabbit extends Animal
     public Rabbit(boolean randomAge, Field field, Location location)
     {
         super(field, location);
+        
+        color = Color.blue;
         age = 0;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);

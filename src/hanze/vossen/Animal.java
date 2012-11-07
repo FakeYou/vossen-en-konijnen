@@ -1,5 +1,6 @@
 package hanze.vossen;
 
+import java.awt.Color;
 import java.util.List;
 
 /**
@@ -16,6 +17,8 @@ public abstract class Animal
     private Field field;
     // The animal's position in the field.
     private Location location;
+    // display color
+    public Color color;
     
     /**
      * Create a new animal at location in field.
