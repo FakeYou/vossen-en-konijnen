@@ -1,8 +1,8 @@
 package hanze.vossen;
 
+import java.awt.Color;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
 import ui.Main;
@@ -98,9 +98,9 @@ public abstract class Animal
         return field;
     }
     
-    protected void setColor(int r, int g, int b)
+    protected void setColor(Color color)
     {
-    	this.color = new Color(Display.getCurrent(), r, g, b);
+    	this.color = color;
     }
     
     public Color getColor()

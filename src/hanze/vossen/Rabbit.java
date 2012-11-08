@@ -43,7 +43,7 @@ public class Rabbit extends Animal
     {
         super(field, location);
         
-      	setColor(0, 255, 0);
+      	setColor(Color.blue);
       	
         age = 0;
         if(randomAge) {

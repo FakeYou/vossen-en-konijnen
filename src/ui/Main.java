@@ -26,7 +26,7 @@ public class Main
 	
 	public static Simulator simulator;
 	
-	private static final int updateSpeed = 150;
+	private static final int updateSpeed = 0;
 	private static int ticksSinceLastUpdate = 0;
 	
 	public Main()
@@ -57,15 +57,15 @@ public class Main
 			{
 				simulator.simulateOneStep();
 	
-				GC gc = new GC(UI.canvas);
+				//GC gc = new GC(UI.canvas);
 				//UI.canvas.redraw();
-				SimulatorView.paint(gc);
-				gc.dispose();
+				//SimulatorView.g2dpaint(UI.canvas);
+				//gc.dispose();
 				
 				ticksSinceLastUpdate = 0;
 			}
 			
-			if(!display.readAndDispatch() || true)
+			if(!display.readAndDispatch())
 			{
 				display.sleep();
 			}
