@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import hanze.vossen.Animal;
+import hanze.vossen.Entity;
 
 import org.eclipse.swt.graphics.GC;
 
@@ -54,7 +54,7 @@ public class SimulatorView
 		{
 			for(int y = 0; y < Main.FIELD_HEIGHT; y++)
 			{
-				Animal animal = (Animal) Main.simulator.field.getObjectAt(x, y);
+				Entity animal = (Entity) Main.simulator.field.getObjectAt(x, y);
 				
 				if(animal != null)
 				{

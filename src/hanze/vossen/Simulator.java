@@ -28,10 +28,12 @@ public class Simulator
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
     // The probability that a eagle will be created in any given grid position.
     // Whatch out they rule!!
-    private static final double EAGLE_CREATION_PROBABILITY = 0.001;  
+    private static final double EAGLE_CREATION_PROBABILITY = 0.001;
+    // The probability that a hunter will be created in any given grid position.
+    private static final double HUNTER_CREATION_PROBABILITY = 0.0005;    
 
     // List of animals in the field.
-    public List<Animal> animals;
+    public List<Entity> animals;
     // The current state of the field.
     public Field field;
     // The current step of the simulation.
@@ -61,7 +63,7 @@ public class Simulator
             width = DEFAULT_WIDTH;
         }
         
-        animals = new ArrayList<Animal>();
+        animals = new ArrayList<Entity>();
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
@@ -106,10 +108,10 @@ public class Simulator
         step++;
 
         // Provide space for newborn animals.
-        List<Animal> newAnimals = new ArrayList<Animal>();        
+        List<Entity> newAnimals = new ArrayList<Entity>();        
         // Let all rabbits act.
-        for(Iterator<Animal> it = animals.iterator(); it.hasNext(); ) {
-            Animal animal = it.next();
+        for(Iterator<Entity> it = animals.iterator(); it.hasNext(); ) {
+            Entity animal = it.next();
             animal.act(newAnimals);
             if(! animal.isAlive()) {
                 it.remove();
@@ -157,6 +159,11 @@ public class Simulator
                     Location location = new Location(row, col);
                     GoldenEagle eagle = new GoldenEagle(true, field, location);
                     animals.add(eagle);
+                }
+                else if(rand.nextDouble() <= HUNTER_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Hunter hunter = new Hunter(field, location);
+                    animals.add(hunter);
                 }
                 // else leave the location empty.
             }

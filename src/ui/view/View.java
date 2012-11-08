@@ -1,6 +1,6 @@
 package ui.view;
 
-import hanze.vossen.Animal;
+import hanze.vossen.Entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -38,7 +38,7 @@ public class View extends JPanel
 		{
 			for(int y = 0; y < MainSWING.FIELD_HEIGHT; y++)
 			{
-				Animal animal = (Animal) MainSWING.simulator.field.getObjectAt(x, y);
+				Entity animal = (Entity) MainSWING.simulator.field.getObjectAt(x, y);
 				
 				if(animal != null)
 				{

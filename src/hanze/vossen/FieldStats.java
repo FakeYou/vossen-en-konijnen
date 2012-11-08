@@ -14,9 +14,9 @@ import java.util.HashMap;
 public class FieldStats
 {
     // Counters for each type of entity (fox, rabbit, etc.) in the simulation.
-    private HashMap<Class, Counter> counters;
+    private static HashMap<Class, Counter> counters  = new HashMap<Class, Counter>();
     // Whether the counters are currently up to date.
-    private boolean countsValid;
+    private static boolean countsValid = true;
 
     /**
      * Construct a FieldStats object.
@@ -49,11 +49,24 @@ public class FieldStats
         return buffer.toString();
     }
     
+    static public int getPopulationOfEntity(Field field, Class animal) {
+    	
+        if(!countsValid) {
+            generateCounts(field);
+        }
+    	
+        if(counters.containsKey(animal)) {
+        	return counters.get(animal).getCount();
+        }
+        
+    	return 0;
+    }
+    
     /**
      * Invalidate the current set of statistics; reset all 
      * counts to zero.
      */
-    public void reset()
+    public static void reset()
     {
         countsValid = false;
         for(Class key : counters.keySet()) {
@@ -66,7 +79,7 @@ public class FieldStats
      * Increment the count for one class of animal.
      * @param animalClass The class of animal to increment.
      */
-    public void incrementCount(Class animalClass)
+    public static void incrementCount(Class animalClass)
     {
         Counter count = counters.get(animalClass);
         if(count == null) {
@@ -114,7 +127,7 @@ public class FieldStats
      * is made for the information.
      * @param field The field to generate the stats for.
      */
-    private void generateCounts(Field field)
+    private static void generateCounts(Field field)
     {
         reset();
         for(int row = 0; row < field.getDepth(); row++) {

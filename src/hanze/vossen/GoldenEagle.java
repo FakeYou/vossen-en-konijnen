@@ -12,7 +12,7 @@ import java.util.Random;
  * @author Ward Holthof
  * @version 2012.11.08
  */
-public class GoldenEagle extends Animal
+public class GoldenEagle extends Entity
 {
     // Characteristics shared by all eagles (class variables).
     
@@ -49,7 +49,7 @@ public class GoldenEagle extends Animal
     {
     	super(field, location);
         
-    	setColor(Color.green);
+    	setColor(Color.orange);
     	
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
@@ -68,7 +68,7 @@ public class GoldenEagle extends Animal
      * @param field The field currently occupied.
      * @param newGoldenEagles A list to return newly born eagles.
      */
-    public void act(List<Animal> newGoldenEagles)
+    public void act(List<Entity> newGoldenEagles)
     {
         incrementAge();
         incrementHunger();
@@ -156,7 +156,7 @@ public class GoldenEagle extends Animal
      * New births will be made into free adjacent locations.
      * @param newGoldenEagles A list to return newly born foxes.
      */
-    private void giveBirth(List<Animal> newGoldenEagles)
+    private void giveBirth(List<Entity> newGoldenEagles)
     {
         // New eagles are born into adjacent locations.
         // Get a list of adjacent free locations.
