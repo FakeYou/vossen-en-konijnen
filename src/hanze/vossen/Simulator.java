@@ -26,6 +26,9 @@ public class Simulator
     private static final double FOX_CREATION_PROBABILITY = 0.02;
     // The probability that a rabbit will be created in any given grid position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
+    // The probability that a eagle will be created in any given grid position.
+    // Whatch out they rule!!
+    private static final double EAGLE_CREATION_PROBABILITY = 0.001;  
 
     // List of animals in the field.
     public List<Animal> animals;
@@ -148,6 +151,11 @@ public class Simulator
                     Location location = new Location(row, col);
                     Rabbit rabbit = new Rabbit(true, field, location);
                     animals.add(rabbit);
+                }
+                else if(rand.nextDouble() <= EAGLE_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    GoldenEagle eagle = new GoldenEagle(true, field, location);
+                    animals.add(eagle);
                 }
                 // else leave the location empty.
             }
