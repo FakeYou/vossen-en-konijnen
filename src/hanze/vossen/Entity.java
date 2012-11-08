@@ -3,10 +3,6 @@ package hanze.vossen;
 import java.awt.Color;
 import java.util.List;
 
-import org.eclipse.swt.widgets.Display;
-
-import ui.Main;
-
 /**
  * A class representing shared characteristics of animals.
  * 

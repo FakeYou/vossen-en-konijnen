@@ -1,0 +1,37 @@
+{
+	application:
+	{
+		title: "Vossen en konijnen simulatie",
+	
+		width: 640,
+		height: 480		
+	},
+	
+	simulator:
+	{
+		entities: [
+			{
+				class: "Fox",
+				creationProbability: 0.02,
+				color: [235, 169, 55],
+				
+				maximumAge: 150,
+				breedingAge: 10,
+				breedingProbability: 0.08,
+				breedingMax: 2,
+				
+				hungerEndurance: 12			
+			},
+			{
+				class: "Rabbit",
+				probability: 0.08,
+				color: [98, 72, 34],
+				
+				maximumAge: 40,
+				breedingAge: 5,
+				breedingProbability: 0.12,
+				breedingMax: 4
+			}
+		]
+	}
+}

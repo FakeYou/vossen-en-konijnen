@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Color;
 
-import ui.main.Main;
-
 /**
  * A simple predator-prey simulator, based on a rectangular field
  * containing rabbits and foxes.
