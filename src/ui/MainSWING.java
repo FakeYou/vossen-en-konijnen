@@ -80,6 +80,7 @@ public class MainSWING extends JFrame
 	{
 		long tick = System.nanoTime();
 		long ticks = 0;
+		long totalTicks = 0;
 		double simulateSpeed = 0.5;
 		
 		while(running)
@@ -92,12 +93,18 @@ public class MainSWING extends JFrame
 			{
 				if(simulatorRunning)
 				{
+					totalTicks += 1;
 					simulator.simulateOneStep();
+					
+					if(simulator.animals.isEmpty())
+					{
+						System.out.println("stopped at: " + totalTicks);
+						simulatorRunning = false;
+					}
 				}
 				
 				repaint();
 				ticks = 0;
-				System.out.println(delta);
 			}
 		}
 	}

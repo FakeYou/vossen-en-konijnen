@@ -17,7 +17,7 @@ public class GoldenEagle extends Animal
     // Characteristics shared by all eagles (class variables).
     
     // The age at which a eagle can start to breed.
-    private static final int BREEDING_AGE = 300;
+    private static final int BREEDING_AGE = 301;
     // The age to which a eagle can live.
     private static final int MAX_AGE = 675;
     // The likelihood of a eagle breeding.
@@ -49,7 +49,7 @@ public class GoldenEagle extends Animal
     {
     	super(field, location);
         
-    	setColor(Color.orange);
+    	setColor(Color.green);
     	
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
@@ -120,6 +120,11 @@ public class GoldenEagle extends Animal
      */
     private Location findFood()
     {
+    	if(foodLevel > 100)
+    	{
+    		return null;
+    	}
+    	
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
@@ -129,20 +134,16 @@ public class GoldenEagle extends Animal
             if(animal instanceof Fox) {
                 Fox fox = (Fox) animal;
                 if(fox.isAlive()) { 
-                	if(foodLevel < 100) {
-                		fox.setDead();
-                		foodLevel = FOOD_VALUE;
-                	}
+            		fox.setDead();
+            		foodLevel = FOOD_VALUE;
                 	return where;
                 }
             } else
             	if(animal instanceof Rabbit) {
                     Rabbit rabbit = (Rabbit) animal;
                     if(rabbit.isAlive()) { 
-                        if(foodLevel < 100) {
-                        	rabbit.setDead();
-                        	foodLevel = FOOD_VALUE;
-                        }
+                    	rabbit.setDead();
+                    	foodLevel = FOOD_VALUE;
                         return where;
                     }
             	}
