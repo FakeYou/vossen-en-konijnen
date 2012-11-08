@@ -36,7 +36,7 @@ public class Controller extends AbstractController implements ActionListener
 	{		
 		if (e.getSource() == start) 
 		{
-			Main.simulator.simulate(1);
+			//Main.simulator.simulate(1);
 		}
 		
 		if (e.getSource() == stop) 

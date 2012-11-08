@@ -14,20 +14,15 @@ public class Main {
 	private Controller controller;
 	private static AbstractView simulatorview;
 	
-	public static Simulator simulator;
-	
-	public static final int FIELD_WIDTH = 100;
-	public static final int FIELD_HEIGHT = 100;
-	
 	public Main() 
 	{
-		simulator = new Simulator(FIELD_WIDTH, FIELD_HEIGHT);
+		//simulator = new Simulator(FIELD_WIDTH, FIELD_HEIGHT);
 		
 		model = new Model();
 		controller = new Controller(model);
-		simulatorview = new SimulatorView(model);
+		//simulatorview = new SimulatorView(model);
 		
-		screen = new JFrame("Model View Controller/Dynamic Model with thread");
+		screen = new JFrame("Vossen en konijnen");
 		screen.setSize(508, 450);
 		screen.setResizable(false);
 		screen.setLayout(null);
@@ -39,15 +34,5 @@ public class Main {
 		
 		screen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		screen.setVisible(true);
-	}
-	
-	public static void repaint()
-	{
-		simulatorview.repaint();
-	}
-	
-	public static void main(String[] args) 
-	{
-		new Main();
 	}
 }

@@ -43,7 +43,8 @@ public class Rabbit extends Animal
     {
         super(field, location);
         
-        color = Color.blue;
+      	setColor(0, 255, 0);
+      	
         age = 0;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);

@@ -1,7 +1,11 @@
 package hanze.vossen;
 
-import java.awt.Color;
 import java.util.List;
+
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
+
+import ui.Main;
 
 /**
  * A class representing shared characteristics of animals.
@@ -92,5 +96,15 @@ public abstract class Animal
     protected Field getField()
     {
         return field;
+    }
+    
+    protected void setColor(int r, int g, int b)
+    {
+    	this.color = new Color(Display.getCurrent(), r, g, b);
+    }
+    
+    public Color getColor()
+    {
+    	return color;
     }
 }

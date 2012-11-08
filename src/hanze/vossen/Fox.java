@@ -48,7 +48,7 @@ public class Fox extends Animal
     {
     	super(field, location);
         
-    	color = Color.red;
+    	setColor(255, 0, 0);
     	
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
