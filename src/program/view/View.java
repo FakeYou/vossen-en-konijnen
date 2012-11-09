@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
@@ -37,9 +38,23 @@ public class View extends JPanel
 		double cellHeight = getHeight() / Main.FIELD_HEIGHT;
 		double cellWidth = getWidth() / Main.FIELD_WIDTH;
 		
-		for(int x = 0; x < Main.FIELD_WIDTH; x++)
+		Iterator<Entity> it = Main.simulator.entities.iterator();
+		while(it.hasNext())
 		{
-			for(int y = 0; y < Main.FIELD_HEIGHT; y++)
+			Entity entity = (Entity) it.next();
+			
+			g2d.setColor(entity.getColor());
+			
+			int x = entity.getLocation().getX();
+			int y = entity.getLocation().getY();
+			
+			Double point = new Rectangle2D.Double((int) (cellWidth * x), (int) (cellHeight * y), cellWidth, cellHeight);
+			g2d.fill(point);
+		}
+		
+		/*for(int x = 0; x < Main.simulator.field.getWidth(); x++)
+		{
+			for(int y = 0; y < Main.simulator.field.getHeight(); y++)
 			{
 				Entity entity = (Entity) Main.simulator.field.getObjectAt(x, y);
 				
@@ -51,6 +66,6 @@ public class View extends JPanel
 					g2d.fill(point);
 				}
 			}
-		}
+		}*/
 	}
 }

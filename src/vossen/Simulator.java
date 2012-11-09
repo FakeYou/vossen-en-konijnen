@@ -16,7 +16,7 @@ public class Simulator
 	private static final int FIELD_WIDTH = 120;
 	private static final int FIELD_HEIGHT = 80;
 	
-	private static final double FOX_CREATION_PROBABLITY = 0.02;
+	private static final double FOX_CREATION_PROBABLITY = 0.00;
 	private static final double RABBIT_CREATION_PROBABLITY = 0.08;
 	
 	
@@ -54,6 +54,7 @@ public class Simulator
 	public void simulate()
 	{
 		step += 1;
+		System.out.println(step);
 		
 		List<Entity> newEntities = new ArrayList<Entity>();
 		Iterator<Entity> it = entities.iterator();

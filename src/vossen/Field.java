@@ -69,7 +69,8 @@ public class Field
 		
 		for(Location location : adjacent)
 		{
-			if(getObjectAt(location) == null)
+			boolean bool = (getObjectAt(location) == null);
+			if(bool)
 			{
 				free.add(location);
 			}
@@ -80,12 +81,17 @@ public class Field
 
 	public Location getFreeRandomAdjacentLocation(Location location)
 	{
-		return GetFreeRandomAdjacentLocation(location.getX(), location.getY());
+		return getFreeRandomAdjacentLocation(location.getX(), location.getY());
 	}
 	
-	public Location GetFreeRandomAdjacentLocation(int x, int y)
+	public Location getFreeRandomAdjacentLocation(int x, int y)
 	{
 		List<Location> adjacent = getFreeAdjacentLocations(x, y);
+		
+		if(adjacent.size() == 0)
+		{
+			return null;
+		}
 		
 		int location = random.nextInt(adjacent.size());
 		
@@ -99,6 +105,11 @@ public class Field
 			return new LinkedList<Location>();
 		}
 		
+		return getAdjacentLocations(location.getX(), location.getY());
+	}
+
+	public List<Location> getAdjacentLocations(Location location)
+	{
 		return getAdjacentLocations(location.getX(), location.getY());
 	}
 	
@@ -115,21 +126,21 @@ public class Field
 		{
 			int xCheck = x + xOffset;
 			
-			if(xCheck < 0 || xCheck > width)
+			if(xCheck < 0 || xCheck > width - 1)
 			{
-				break;
+				continue;
 			}			
 			
 			for(int yOffset = -1; yOffset <= 1; yOffset++)
 			{
 				int yCheck = y + yOffset;
 				
-				if(yCheck < 0 || yCheck > height)
+				if(yCheck < 0 || yCheck > height - 1)
 				{
-					break;
+					continue;
 				}
 				
-				locations.add(new Location(x, y));
+				locations.add(new Location(xCheck, yCheck));
 			}
 		}
 		

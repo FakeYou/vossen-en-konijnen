@@ -65,25 +65,23 @@ public class Main extends JFrame
 		{
 			float delta = (System.nanoTime() - tick) / 1000000.0f;
 			tick = System.nanoTime();
-			ticks += tick;
+			ticks += delta;
 			
-			if(ticks > simulateSpeed)
+			if(simulate)
 			{
-				if(simulate)
+				totalTicks += 1;
+				simulator.simulate();
+				
+				if(simulator.entities.isEmpty())
 				{
-					totalTicks += 1;
-					simulator.simulate();
-					
-					if(simulator.entities.isEmpty())
-					{
-						System.out.println("stopped at: " + totalTicks);
-						simulate = false;
-					}
+					System.out.println("stopped at: " + totalTicks);
+					simulate = false;
 				}
 				
-				repaint();
-				ticks = 0;
+				simulator.field.clear();
 			}
+			
+			repaint();
 		}
 	}
 	

@@ -14,6 +14,16 @@ public class Json
 {
 	private JsonParser parser = new JsonParser();
 	private JsonObject object;
+	
+	public Json()
+	{
+		
+	}
+	
+	public Json(JsonObject object)
+	{
+		this.object = object;
+	}
 
 	public void loadFile(String file)
 	{
@@ -37,6 +47,22 @@ public class Json
 		}
 		
 		object = parser.parse(stringbuilder.toString()).getAsJsonObject();
+	}
+	
+	public Json getAsJson(String ... keys)
+	{
+		JsonObject json = object.getAsJsonObject();
+		for(int i = 0; i < keys.length; i++)
+		{
+			if(!json.has(keys[i]))
+			{
+				return null;
+			}
+			
+			json = json.get(keys[i]).getAsJsonObject();
+		}
+		
+		return new Json(json);		
 	}
 	
 	public JsonElement get(String ... keys)

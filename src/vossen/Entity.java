@@ -27,26 +27,10 @@ public abstract class Entity
 		
 		if(location != null)
 		{
-			field.clear(location);
+			field.clear(location.getX(), location.getY());
 			location = null;
 			field = null;
 		}
-	}
-	
-	protected boolean isAlive()
-	{
-		return alive;
-	}
-	
-	protected void setLocation(Location location)
-	{
-	    if(location != null) 
-	    {
-	        field.clear(location);
-	    }
-	    
-	    this.location = location;
-	    field.place(this, location);
 	}
 	
 	protected Field getField()
@@ -62,5 +46,31 @@ public abstract class Entity
 	public Color getColor()
 	{
 		return color;
+	}
+
+	public Location getLocation()
+	{
+		return location;
+	}
+	
+	protected void setLocation(Location location)
+	{
+	    if(location != null) 
+	    {
+			field.clear(location.getX(), location.getY());
+	    
+	        this.location = location;
+	    	field.place(this, location);
+	    }
+	}
+	
+	protected boolean isAlive()
+	{
+		return alive;
+	}
+
+	public void setField(Field field)
+	{
+		this.field = field;
 	}
 }
