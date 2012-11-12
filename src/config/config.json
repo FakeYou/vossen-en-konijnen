@@ -28,12 +28,12 @@
 			{
 				class: "Rabbit",
 				probability: 0.08,
-				color: [98, 72, 34],
+				color: [255, 0, 255],
 				
 				maximumAge: 40,
 				breedingAge: 5,
 				breedingProbability: 0.12,
-				breedingMax: 4
+				breedingMax: 1
 			}
 		}
 	}

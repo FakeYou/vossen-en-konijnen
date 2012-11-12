@@ -1,7 +1,14 @@
 package vossen.entities;
 
+import hanze.vossen.Randomizer;
+
 import java.awt.Color;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+
+import program.Main;
+import program.helpers.Json;
 
 import vossen.Entity;
 import vossen.Field;
@@ -9,15 +16,136 @@ import vossen.helpers.Location;
 
 public class Fox extends Entity
 {
+	private Json config;
+	private static Random random = Randomizer.getRandom();
+	
+	private int age;
+	private int maxAge;
+	private int hunger;
+	private int hungerEndurance;
+	private int breedingAge;
+	private double breedingProbability;
+	private int breedingMax;
+
 	public Fox(Field field, Location location)
 	{
 		super(field, location);
-		setColor(new Color(235, 169, 55));
+        
+		config = Main.config.getAsJson("simulator", "entities", "fox");
+		
+		setColor(new Color(
+			config.get("color").getAsJsonArray().get(0).getAsInt(),
+			config.get("color").getAsJsonArray().get(1).getAsInt(),
+			config.get("color").getAsJsonArray().get(2).getAsInt()
+		));
+		
+		age = 0;
+		maxAge = config.get("maximumAge").getAsInt();
+		hunger = 0;
+		hungerEndurance = config.get("hungerEndurance").getAsInt();
+		breedingAge = config.get("breedingAge").getAsInt();
+		breedingProbability = config.get("breedingProbability").getAsDouble();
+		breedingMax = config.get("breedingMax").getAsInt();
 	}
 
 	@Override
 	public void tick(List<Entity> newAnimals)
 	{
-		
+		incrementAge();
+		incrementHunger();
+
+        if(isAlive()) 
+        {
+            giveBirth(newAnimals);      
+        	
+            Location newLocation = findFood();
+            if(newLocation == null)
+            { 
+                newLocation = getField().getFreeRandomAdjacentLocation(getLocation());
+            }
+            
+            if(newLocation != null) 
+            {
+                setLocation(newLocation);
+            }
+            else 
+            {
+                kill();
+            }
+        }
 	}
+	
+	private void incrementAge()
+    {
+        age++;
+        if(age > maxAge) 
+        {
+            kill();
+        }
+    }
+	
+    private void incrementHunger()
+    {
+    	hunger++;
+        if(hunger > hungerEndurance) 
+        {
+            kill();
+        }
+    }
+    
+    private Location findFood()
+    {
+        Field field = getField();
+        List<Location> adjacent = field.getAdjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        
+        while(it.hasNext()) 
+        {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Rabbit) 
+            {
+                Rabbit rabbit = (Rabbit) animal;
+                
+                if(rabbit.isAlive()) { 
+                    rabbit.kill();
+                    hunger = 0;
+                    return where;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private void giveBirth(List<Entity> newFoxes)
+    {
+        Field field = getField();
+        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        
+        int births = breed();
+        
+        for(int b = 0; b < births && free.size() > 0; b++) 
+        {
+            Location loc = free.remove(0);
+            Fox young = new Fox(field, loc);
+            newFoxes.add(young);
+        }
+    }
+    
+    private int breed()
+    {
+        int births = 0;
+        
+        if(canBreed() && random.nextDouble() <= breedingProbability) 
+        {
+            births = random.nextInt(breedingMax) + 1;
+        }
+        
+        return births;
+    }
+    
+    private boolean canBreed()
+    {
+        return age >= breedingAge;
+    }
 }

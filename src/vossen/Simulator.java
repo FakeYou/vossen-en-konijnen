@@ -13,10 +13,10 @@ import vossen.helpers.Randomizer;
 
 public class Simulator
 {
-	private static final int FIELD_WIDTH = 120;
-	private static final int FIELD_HEIGHT = 80;
+	private static final int FIELD_WIDTH = 10;
+	private static final int FIELD_HEIGHT = 10;
 	
-	private static final double FOX_CREATION_PROBABLITY = 0.00;
+	private static final double FOX_CREATION_PROBABLITY = 0.02;
 	private static final double RABBIT_CREATION_PROBABLITY = 0.08;
 	
 	

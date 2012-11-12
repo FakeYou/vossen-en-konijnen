@@ -21,7 +21,7 @@ public abstract class Entity
 	
 	abstract public void tick(List<Entity> newAnimals);
 	
-	protected void kill()
+	public void kill()
 	{
 		alive = false;
 		
@@ -64,7 +64,7 @@ public abstract class Entity
 	    }
 	}
 	
-	protected boolean isAlive()
+	public boolean isAlive()
 	{
 		return alive;
 	}

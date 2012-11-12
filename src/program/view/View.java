@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -38,10 +40,18 @@ public class View extends JPanel
 		double cellHeight = getHeight() / Main.FIELD_HEIGHT;
 		double cellWidth = getWidth() / Main.FIELD_WIDTH;
 		
-		Iterator<Entity> it = Main.simulator.entities.iterator();
+		List<Entity> entities = new ArrayList<Entity>();
+		entities.addAll(Main.simulator.entities);
+		
+		Iterator<Entity> it = entities.iterator();
 		while(it.hasNext())
 		{
 			Entity entity = (Entity) it.next();
+			
+			if(entity == null || entity.getLocation() == null || !entity.isAlive())
+			{
+				continue;
+			}
 			
 			g2d.setColor(entity.getColor());
 			

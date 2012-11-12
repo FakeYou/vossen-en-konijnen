@@ -28,6 +28,7 @@ public class Main extends JFrame
 	
 	public static Simulator simulator;
 	public static boolean simulate;
+	public static int simulateSteps;
 	private boolean running;
 	
 	public Main()
@@ -47,6 +48,7 @@ public class Main extends JFrame
 		
 		running = true;
 		simulate = false;
+		simulateSteps = 0;
 		simulator = new Simulator(FIELD_WIDTH, FIELD_HEIGHT);
 
 		UI.mainScreen(this);
@@ -71,6 +73,7 @@ public class Main extends JFrame
 			{
 				totalTicks += 1;
 				simulator.simulate();
+				simulateSteps -= 1;
 				
 				if(simulator.entities.isEmpty())
 				{
@@ -79,6 +82,11 @@ public class Main extends JFrame
 				}
 				
 				simulator.field.clear();
+			}
+			
+			if(simulateSteps <= 0)
+			{
+				simulate = false;
 			}
 			
 			repaint();
