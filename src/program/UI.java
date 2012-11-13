@@ -53,6 +53,19 @@ public class UI
 		});
 		sidepanel.add(btnStepSimulatie);
 		
+		JButton btnResetSimulatie = new JButton("Reset");
+		btnResetSimulatie.setBounds(10, 140, 133, 23);
+		btnResetSimulatie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Main.simulate = false;
+				Main.simulateSteps = 0;
+				
+				Main.simulator.reset();
+			}
+		});
+		sidepanel.add(btnResetSimulatie);
+		
 		JPanel panel = new View();
 		panel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		panel.setBackground(Color.WHITE);

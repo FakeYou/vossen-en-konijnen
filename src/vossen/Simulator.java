@@ -1,11 +1,12 @@
 package vossen;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import vossen.entities.Eagle;
 import vossen.entities.Fox;
 import vossen.entities.Rabbit;
 import vossen.helpers.Location;
@@ -18,11 +19,12 @@ public class Simulator
 	
 	private static final double FOX_CREATION_PROBABLITY = 0.02;
 	private static final double RABBIT_CREATION_PROBABLITY = 0.08;
+	private static final double EAGLE_CREATION_PROBABLITY = 0.001;
 	
 	
 	public List<Entity> entities;
 	public Field field;
-	private int step;
+	public int step;
 	
 	public Simulator()
 	{
@@ -74,6 +76,31 @@ public class Simulator
 		entities.addAll(newEntities);
 	}
 	
+	public HashMap<String, Integer> countEntities()
+	{		
+		Iterator<Entity> it = entities.iterator();
+		HashMap<String, Integer> count = new HashMap<String, Integer>();
+		
+		while(it.hasNext())
+		{
+			Entity entity = (Entity) it.next();
+			
+			if(entity == null || entity.getLocation() == null || !entity.isAlive())
+			{
+				continue;
+			}
+			
+			if(!count.containsKey(entity.getClass().toString()))
+			{
+				count.put(entity.getClass().toString(), 0);
+			}
+			
+			count.put(entity.getClass().toString(), count.get(entity.getClass().toString()) + 1);
+		}
+		
+		return count;
+	}
+	
 	public void reset()
 	{
 		step = 0;
@@ -102,6 +129,12 @@ public class Simulator
 					Location location = new Location(x, y);
 					Rabbit rabbit = new Rabbit(field, location);
 					entities.add(rabbit);
+				}
+				else if(random.nextDouble() <= EAGLE_CREATION_PROBABLITY)
+				{
+					Location location = new Location(x, y);
+					Eagle eagle = new Eagle(field, location);
+					entities.add(eagle);
 				}
 			}
 		}

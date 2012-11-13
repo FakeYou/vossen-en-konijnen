@@ -14,7 +14,7 @@ import vossen.Entity;
 import vossen.Field;
 import vossen.helpers.Location;
 
-public class Fox extends Entity
+public class Eagle extends Entity
 {
 	private Json config;
 	private static Random random = Randomizer.getRandom();
@@ -26,19 +26,19 @@ public class Fox extends Entity
 	private int breedingAge;
 	private double breedingProbability;
 	private int breedingMax;
-
-	public Fox(Field field, Location location)
+	
+	public Eagle(Field field, Location location)
 	{
 		super(field, location);
-        
-		config = Main.config.getAsJson("simulator", "entities", "fox");
+
+		config = Main.config.getAsJson("simulator", "entities", "eagle");
 		
 		setColor(new Color(
 			config.get("color").getAsJsonArray().get(0).getAsInt(),
 			config.get("color").getAsJsonArray().get(1).getAsInt(),
 			config.get("color").getAsJsonArray().get(2).getAsInt()
 		));
-		
+
 		age = 0;
 		maxAge = config.get("maximumAge").getAsInt();
 		hunger = 0;
@@ -53,26 +53,26 @@ public class Fox extends Entity
 	{
 		incrementAge();
 		incrementHunger();
-
-        if(isAlive()) 
-        {
-            giveBirth(newAnimals);      
-        	
-            Location newLocation = findFood();
-            if(newLocation == null)
-            { 
-                newLocation = getField().getFreeRandomAdjacentLocation(getLocation());
-            }
-            
-            if(newLocation != null) 
-            {
-                setLocation(newLocation);
-            }
-            else 
-            {
-                kill();
-            }
-        }
+		
+		if(isAlive()) 
+		{
+		    giveBirth(newAnimals);      
+			
+		    Location newLocation = findFood();
+		    if(newLocation == null)
+		    { 
+		        newLocation = getField().getFreeRandomAdjacentLocation(getLocation());
+		    }
+		    
+		    if(newLocation != null) 
+		    {
+		        setLocation(newLocation);
+		    }
+		    else 
+		    {
+		        kill();
+		    }
+		}
 	}
 	
 	private void incrementAge()
@@ -95,26 +95,47 @@ public class Fox extends Entity
     
     private Location findFood()
     {
+    	/*if(hunger < 100)
+    	{
+    		return null;
+    	}*/
+    	
         Field field = getField();
         List<Location> adjacent = field.getAdjacentLocations(getLocation());
+        
         Iterator<Location> it = adjacent.iterator();
         
         while(it.hasNext()) 
         {
             Location where = it.next();
             Object animal = field.getObjectAt(where);
-            if(animal instanceof Rabbit) 
+            
+            if(animal instanceof Fox) 
+            {
+                Fox fox = (Fox) animal;
+                
+                if(fox.isAlive()) 
+                { 
+            		fox.kill();
+                    hunger = 0;
+                	
+                    return where;
+                }
+            } 
+            else if(animal instanceof Rabbit) 
             {
                 Rabbit rabbit = (Rabbit) animal;
                 
-                if(rabbit.isAlive()) { 
-                    rabbit.kill();
-                    //hunger -= Main.config.get("simulator", "entities", "rabbit", "foodValue").getAsInt();
+                if(rabbit.isAlive()) 
+                { 
+                	rabbit.kill();
                     hunger = 0;
+                    
                     return where;
                 }
-            }
+        	}
         }
+        
         return null;
     }
     
@@ -128,7 +149,7 @@ public class Fox extends Entity
         for(int b = 0; b < births && free.size() > 0; b++) 
         {
             Location loc = free.remove(0);
-            Fox young = new Fox(field, loc);
+            Eagle young = new Eagle(field, loc);
             newFoxes.add(young);
         }
     }
