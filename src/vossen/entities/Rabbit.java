@@ -8,14 +8,15 @@ import java.util.Random;
 
 import com.google.gson.JsonObject;
 
-import program.Main;
+import program.Vossen;
 import program.helpers.Json;
 
+import vossen.Animal;
 import vossen.Entity;
 import vossen.Field;
 import vossen.helpers.Location;
 
-public class Rabbit extends Entity
+public class Rabbit extends Entity implements Animal
 {
 	private int age;
 	private Object foodLevel;
@@ -26,7 +27,7 @@ public class Rabbit extends Entity
 	{
 		super(field, location);
         
-		config = Main.config.getAsJson("simulator", "entities", "rabbit");
+		config = Vossen.config.getAsJson("simulator", "entities", "rabbit");
 		
 		setColor(new Color(
 			config.get("color").getAsJsonArray().get(0).getAsInt(),
@@ -40,6 +41,8 @@ public class Rabbit extends Entity
 	@Override
 	public void tick(List<Entity> newAnimals)
 	{
+        config = Vossen.config.getAsJson("simulator", "entities", "rabbit");
+		
 		incrementAge();
 		if(isAlive())
 		{
@@ -57,7 +60,7 @@ public class Rabbit extends Entity
 		}
 	}
 	
-	private void incrementAge()
+	public void incrementAge()
 	{
 		age += 1;
 		
@@ -67,7 +70,7 @@ public class Rabbit extends Entity
 		}
 	}
 	
-	private void giveBirth(List<Entity> newRabbits)
+	public void giveBirth(List<Entity> newRabbits)
     {
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -83,7 +86,7 @@ public class Rabbit extends Entity
         }
     }
 	
-	private int breed()
+	public int breed()
     {
 		double breedingProbability = config.get("breedingProbability").getAsDouble();
 		int breedingMax = config.get("breedingMax").getAsInt();
@@ -95,8 +98,22 @@ public class Rabbit extends Entity
         return births;
     }
 	
-    private boolean canBreed()
+    public boolean canBreed()
     {
         return age >= config.get("breedingAge").getAsInt();
     }
+
+	@Override
+	public void incrementHunger()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Location findFood()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

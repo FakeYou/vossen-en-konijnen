@@ -1,9 +1,14 @@
 
 package program;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,12 +22,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import program.helpers.Json;
-import program.view.Graph;
-import program.view.LineGraph;
-import program.view.View;
+import program.view.PieView;
+import program.view.LineView;
+import program.view.GridView;
 import javax.swing.JLabel;
 
-public class Main extends JFrame
+import org.jfree.data.category.DefaultCategoryDataset;
+
+public class Vossen extends JFrame
 {
 	private static final long serialVersionUID = 1186051179116663399L;
 
@@ -41,31 +48,46 @@ public class Main extends JFrame
 	public static int simulateSteps;
 	private boolean running;
 
-	private JLabel lblSteps;
+	public UI ui;
 	
-	public Main()
+	private JLabel lblSteps;
+
+	private static DefaultCategoryDataset dataset;
+	
+	public Vossen()
 	{
 		config.loadFile("/config/config.json");
-		JsonObject app = config.get("application").getAsJsonObject();
-		
-		setEnabled(true);
-		
-		config.set("Hello world", "application", "title");
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(639, 485);
-		setTitle(app.get("title").getAsString());
-		setVisible(true);
-		getContentPane().setLayout(null);
 		
 		running = true;
 		simulate = false;
 		simulateSteps = 0;
 		simulator = new Simulator(FIELD_WIDTH, FIELD_HEIGHT);
+		simulator.reset();
 
-		ui(this);
+		dataset = new DefaultCategoryDataset();
+		
+		ui = new UI();
 		
 		loop();		
+	}
+	
+	public static void updateStats()
+	{		
+		HashMap<String, Integer> count = Vossen.simulator.countEntities();
+		
+		Iterator<Entry<String, Integer>> it = count.entrySet().iterator();
+		
+		while(it.hasNext())
+		{
+			Map.Entry entry = (Map.Entry) it.next();
+			
+			dataset.addValue((Number) entry.getValue(), entry.getKey().toString(), Vossen.simulator.step);
+		}
+	}
+	
+	public static DefaultCategoryDataset getStats()
+	{
+		return dataset;
 	}
 	
 	public void loop()
@@ -73,7 +95,7 @@ public class Main extends JFrame
 		long tick = System.nanoTime();
 		long ticks = 0;
 		long totalTicks = 0;
-		int ticksPerSecond = 20;
+		int ticksPerSecond = 60;
 		long deltaSinceUpdate = 0;
 		
 		while(running)
@@ -96,16 +118,17 @@ public class Main extends JFrame
 				}
 				
 				simulator.field.clear();
-
-				repaint();
+				updateStats();
 			}
+
+			ui.frame.repaint();
 			
 			if(simulateSteps <= 0)
 			{
 				simulate = false;
 			}
 			
-			lblSteps.setText("steps: " + totalTicks);
+			//ui.lblSteps.setText("steps: " + totalTicks);
 		}
 	}
 	
@@ -113,16 +136,14 @@ public class Main extends JFrame
 	{
 		JPanel sidepanel = new JPanel();
 		sidepanel.setBounds(10, 11, 148, 420);
-		frame.getContentPane().add(sidepanel);
-		sidepanel.setLayout(null);
 		
 		JButton btnStartSimulatie = new JButton("Start");
 		btnStartSimulatie.setBounds(10, 5, 133, 23);
 		btnStartSimulatie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Main.simulate = true;
-				Main.simulateSteps = Integer.MAX_VALUE;
+				Vossen.simulate = true;
+				Vossen.simulateSteps = Integer.MAX_VALUE;
 			}
 		});
 		sidepanel.add(btnStartSimulatie);
@@ -132,7 +153,7 @@ public class Main extends JFrame
 		btnStopSimulatie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Main.simulate = false;
+				Vossen.simulate = false;
 			}
 		});
 		sidepanel.add(btnStopSimulatie);
@@ -142,8 +163,8 @@ public class Main extends JFrame
 		btnStepSimulatie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Main.simulate = true;
-				Main.simulateSteps = 1;
+				Vossen.simulate = true;
+				Vossen.simulateSteps = 1;
 			}
 		});
 		sidepanel.add(btnStepSimulatie);
@@ -153,10 +174,10 @@ public class Main extends JFrame
 		btnResetSimulatie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Main.simulate = false;
-				Main.simulateSteps = 0;
+				Vossen.simulate = false;
+				Vossen.simulateSteps = 0;
 				
-				Main.simulator.reset();
+				Vossen.simulator.reset();
 			}
 		});
 		sidepanel.add(btnResetSimulatie);
@@ -165,15 +186,18 @@ public class Main extends JFrame
 		lblSteps.setBounds(10, 395, 128, 14);
 		sidepanel.add(lblSteps);
 		
-		JPanel panel = new LineGraph();
+		frame.getContentPane().add(sidepanel, BorderLayout.WEST);
+		sidepanel.setLayout(new BorderLayout());
+		
+		JPanel panel = new JPanel();
 		panel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(168, 11, 446, 420);
-		frame.getContentPane().add(panel);
+		frame.getContentPane().add(panel, BorderLayout.EAST);
 	}
 	
 	public static void main(String[] args)
 	{
-		new Main();
+		new Vossen();
 	}
 }

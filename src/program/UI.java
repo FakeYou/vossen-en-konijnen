@@ -1,75 +1,102 @@
 package program;
 
-import java.awt.Color;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
 
-import program.view.View;
-
+import program.view.GridView;
+import program.view.LineView;
+import program.view.PieView;
 
 public class UI
 {
-	public static void mainScreen(JFrame frame)
+	public JFrame frame;
+	private JTabbedPane tabbedPane;
+
+	public UI()
 	{
-		JPanel sidepanel = new JPanel();
-		sidepanel.setBounds(10, 11, 148, 420);
-		frame.getContentPane().add(sidepanel);
-		sidepanel.setLayout(null);
+		frame = new JFrame();
 		
-		JButton btnStartSimulatie = new JButton("Start");
-		btnStartSimulatie.setBounds(10, 5, 133, 23);
-		btnStartSimulatie.addActionListener(new ActionListener() {
+		frame.setEnabled(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(640, 480);
+		frame.setTitle("Vossen en Konijnen");
+		frame.setVisible(true);
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mnFile.add(mntmExit);
+		
+		JMenu mnSimulator = new JMenu("Simulator");
+		menuBar.add(mnSimulator);
+		
+		JMenuItem mntmStart = new JMenuItem("Start");
+		mnSimulator.add(mntmStart);
+		mntmStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Main.simulate = true;
-				Main.simulateSteps = Integer.MAX_VALUE;
+				Vossen.simulate = true;
+				Vossen.simulateSteps = Integer.MAX_VALUE;				
 			}
 		});
-		sidepanel.add(btnStartSimulatie);
 		
-		JButton btnStopSimulatie = new JButton("Pauze");
-		btnStopSimulatie.setBounds(10, 33, 133, 23);
-		btnStopSimulatie.addActionListener(new ActionListener() {
+		JMenuItem mntmPause = new JMenuItem("Pause");
+		mnSimulator.add(mntmPause);
+		mntmPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Main.simulate = false;
+				Vossen.simulate = false;			
 			}
 		});
-		sidepanel.add(btnStopSimulatie);
 		
-		JButton btnStepSimulatie = new JButton("1 stap");
-		btnStepSimulatie.setBounds(10, 61, 133, 23);
-		btnStepSimulatie.addActionListener(new ActionListener() {
+		JMenuItem mntmReset = new JMenuItem("Reset");
+		mnSimulator.add(mntmReset);
+		mntmReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Main.simulate = true;
-				Main.simulateSteps = 1;
+				Vossen.simulate = false;
+				Vossen.simulateSteps = 0;
+				Vossen.simulator.reset();
 			}
 		});
-		sidepanel.add(btnStepSimulatie);
 		
-		JButton btnResetSimulatie = new JButton("Reset");
-		btnResetSimulatie.setBounds(10, 140, 133, 23);
-		btnResetSimulatie.addActionListener(new ActionListener() {
+		JSeparator separator = new JSeparator();
+		mnSimulator.add(separator);
+		
+		JMenuItem mntmSettings = new JMenuItem("Settings");
+		mnSimulator.add(mntmSettings);
+		mntmSettings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Main.simulate = false;
-				Main.simulateSteps = 0;
-				
-				Main.simulator.reset();
+				new Settings();
 			}
 		});
-		sidepanel.add(btnResetSimulatie);
 		
-		JPanel panel = new View();
-		panel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(168, 11, 446, 420);
-		frame.getContentPane().add(panel);
+		
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		
+		JPanel Grid = new GridView();
+		tabbedPane.addTab("Veld", null, Grid, null);
+		
+		JPanel Line = new LineView();
+		tabbedPane.addTab("Lijngrafiek", null, Line, null);
+		
+		JPanel Pie = new PieView();
+		tabbedPane.addTab("Taartdiagram", null, Pie, null);
 	}
 }

@@ -13,28 +13,32 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.CategoryToPieDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
+import org.jfree.util.TableOrder;
 
-import program.Main;
+import program.Vossen;
 
-public class Graph extends JPanel
+public class PieView extends JPanel
 {
 	private static final long serialVersionUID = 6549863187908510082L;
-	private DefaultPieDataset dataset;
 	private int i;
 	private ChartPanel chartPanel;
+	private DefaultCategoryDataset dataset;
+	private PieDataset d;
+	private CategoryToPieDataset piedataset;
 
-	public Graph()
+	public PieView()
 	{
 		super();
 		
-		dataset = new DefaultPieDataset();
-
-		JFreeChart chart = ChartFactory.createPieChart3D(
+		JFreeChart chart = ChartFactory.createPieChart(
 				"",          			// chart title
-	            dataset,                // data
+	            piedataset, 
 	            true,                   // include legend
 	            true,
 	            false
@@ -47,7 +51,7 @@ public class Graph extends JPanel
         plot.setForegroundAlpha(0.5f);*/
         
         chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(409, 278));
+        chartPanel.setPreferredSize(new java.awt.Dimension(400, 300));
         
         this.add(chartPanel);
         this.validate();
@@ -55,17 +59,19 @@ public class Graph extends JPanel
 	
 	public void paint(Graphics g)
 	{
-		super.paint(g);
+		super.paint(g);		
 		
-		HashMap<String, Integer> count = Main.simulator.countEntities();
-		
-		Iterator<Entry<String, Integer>> it = count.entrySet().iterator();
-		
-		while(it.hasNext())
+		try
 		{
-			Map.Entry entry = (Map.Entry) it.next();
-			
-			dataset.setValue(entry.getKey().toString(), (Number) entry.getValue());
+			dataset = (DefaultCategoryDataset) Vossen.getStats().clone();
 		}
+		catch (CloneNotSupportedException e)
+		{
+			e.printStackTrace();
+		}
+		
+		piedataset = new CategoryToPieDataset(dataset, TableOrder.BY_ROW, dataset.getRowCount() - 1);
+		
+		chartPanel.revalidate();
 	}
 }

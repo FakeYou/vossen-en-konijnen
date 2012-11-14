@@ -1,5 +1,6 @@
 package program.view;
 
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,19 +22,19 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
-import program.Main;
+import program.Vossen;
 
-public class LineGraph extends JPanel
+public class LineView extends JPanel
 {
 	private static final long serialVersionUID = 1546220782559888898L;
-	private DefaultCategoryDataset dataset;
 	private ChartPanel chartPanel;
+	private DefaultCategoryDataset dataset;
 	
-	public LineGraph()
+	public LineView()
 	{
 		super();
 		
-		dataset = new DefaultCategoryDataset();
+		dataset = Vossen.getStats();
 		
 		JFreeChart chart = ChartFactory.createLineChart(
 				"", 
@@ -47,7 +48,7 @@ public class LineGraph extends JPanel
 		);
 		
         chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(409, 278));
+        chartPanel.setPreferredSize(new java.awt.Dimension(400, 300));
         
         this.add(chartPanel);
         this.validate();
@@ -55,22 +56,8 @@ public class LineGraph extends JPanel
 	
 	public void paint(Graphics g)
 	{
-		super.paint(g);
-		
-		HashMap<String, Integer> count = Main.simulator.countEntities();
-		
-		Iterator<Entry<String, Integer>> it = count.entrySet().iterator();
-		
-		while(it.hasNext())
-		{
-			Map.Entry entry = (Map.Entry) it.next();
-			
-			dataset.addValue((Number) entry.getValue(), entry.getKey().toString(), Main.simulator.step);
-		}
-		
-		if(Main.simulator.step > 50 && false)
-		{
-			dataset.removeColumn(0);
-		}
+		super.paint(g);		
+		dataset = Vossen.getStats();
+		chartPanel.revalidate();
 	}
 }

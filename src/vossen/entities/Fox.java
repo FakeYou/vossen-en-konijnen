@@ -7,14 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import program.Main;
+import program.Vossen;
 import program.helpers.Json;
 
+import vossen.Animal;
 import vossen.Entity;
 import vossen.Field;
 import vossen.helpers.Location;
 
-public class Fox extends Entity
+public class Fox extends Entity implements Animal
 {
 	private Json config;
 	private static Random random = Randomizer.getRandom();
@@ -31,7 +32,7 @@ public class Fox extends Entity
 	{
 		super(field, location);
         
-		config = Main.config.getAsJson("simulator", "entities", "fox");
+		config = Vossen.config.getAsJson("simulator", "entities", "fox");
 		
 		setColor(new Color(
 			config.get("color").getAsJsonArray().get(0).getAsInt(),
@@ -51,6 +52,8 @@ public class Fox extends Entity
 	@Override
 	public void tick(List<Entity> newAnimals)
 	{
+		config = Vossen.config.getAsJson("simulator", "entities", "fox");
+		
 		incrementAge();
 		incrementHunger();
 
@@ -75,7 +78,7 @@ public class Fox extends Entity
         }
 	}
 	
-	private void incrementAge()
+	public void incrementAge()
     {
         age++;
         if(age > maxAge) 
@@ -84,7 +87,7 @@ public class Fox extends Entity
         }
     }
 	
-    private void incrementHunger()
+    public void incrementHunger()
     {
     	hunger++;
         if(hunger > hungerEndurance) 
@@ -93,7 +96,7 @@ public class Fox extends Entity
         }
     }
     
-    private Location findFood()
+    public Location findFood()
     {
         Field field = getField();
         List<Location> adjacent = field.getAdjacentLocations(getLocation());
@@ -118,7 +121,7 @@ public class Fox extends Entity
         return null;
     }
     
-    private void giveBirth(List<Entity> newFoxes)
+    public void giveBirth(List<Entity> newFoxes)
     {
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
@@ -133,7 +136,7 @@ public class Fox extends Entity
         }
     }
     
-    private int breed()
+    public int breed()
     {
         int births = 0;
         
@@ -145,7 +148,7 @@ public class Fox extends Entity
         return births;
     }
     
-    private boolean canBreed()
+    public boolean canBreed()
     {
         return age >= breedingAge;
     }

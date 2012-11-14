@@ -28,6 +28,8 @@
 				breedingProbability: 0.11,
 				breedingMax: 1,
 				
+				creationProbability: 0.11,
+				
 				hungerEndurance: 12,
 				
 				foodValue: 20
@@ -43,6 +45,10 @@
 				breedingProbability: 0.15,
 				breedingMax: 4,
 				
+				creationProbability: 0.15,
+				
+				hungerEndurance: 0,
+				
 				foodValue: 3
 			},
 			eagle:
@@ -51,10 +57,12 @@
 				probability: 0.005,
 				color: [255, 0, 0],
 				
-				maximumAge: 100,
+				maximumAge: 300,
 				breedingAge: 40,
-				breedingProbability: 0.005,
-				breedingMax: 1,
+				breedingProbability: 0.01,
+				breedingMax: 2,
+				
+				creationProbability: 0.005,
 				
 				hungerEndurance: 100
 			},
@@ -62,7 +70,16 @@
 			{
 				class: "Hunter",
 				probability: 0.001,
-				color: [0, 0, 0]
+				color: [0, 0, 0],
+				
+				maximumAge: 0,
+				breedingAge: 0,
+				breedingProbability: 0,
+				breedingMax: 0,
+				
+				creationProbability: 0.001,
+				
+				hungerEndurance: 0
 			}
 		}
 	}

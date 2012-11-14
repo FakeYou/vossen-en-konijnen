@@ -65,6 +65,11 @@ public class Json
 		return new Json(json);		
 	}
 	
+	public JsonObject getObject()
+	{
+		return object;
+	}
+	
 	public JsonElement get(String ... keys)
 	{
 		JsonObject json = object.getAsJsonObject();

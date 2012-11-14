@@ -10,17 +10,17 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import program.Main;
+import program.Vossen;
 
 import vossen.Entity;
 
-public class View extends JPanel
+public class GridView extends JPanel
 {
 	private static final long serialVersionUID = 208243931793745149L;
 	
 	private int pos = 0;
 	
-	public View()
+	public GridView()
 	{
 		super();
 	}
@@ -29,7 +29,7 @@ public class View extends JPanel
 	{
 		super.paint(g);
 		
-		if(Main.simulator == null)
+		if(Vossen.simulator == null)
 		{
 			return;
 		}
@@ -37,11 +37,11 @@ public class View extends JPanel
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.translate(2, 2);
 		
-		double cellHeight = getHeight() / Main.FIELD_HEIGHT;
-		double cellWidth = getWidth() / Main.FIELD_WIDTH;
+		double cellHeight = getHeight() / Vossen.FIELD_HEIGHT;
+		double cellWidth = getWidth() / Vossen.FIELD_WIDTH;
 		
 		List<Entity> entities = new ArrayList<Entity>();
-		entities.addAll(Main.simulator.entities);
+		entities.addAll(Vossen.simulator.entities);
 		
 		Iterator<Entity> it = entities.iterator();
 		while(it.hasNext())
