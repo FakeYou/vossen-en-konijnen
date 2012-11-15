@@ -15,6 +15,12 @@ import vossen.Entity;
 import vossen.Field;
 import vossen.helpers.Location;
 
+/**
+ * the fox animal entity
+ * 
+ * @author FakeYou
+ * @version 2012-11-10
+ */
 public class Fox extends Entity implements Animal
 {
 	private Json config;
@@ -28,10 +34,15 @@ public class Fox extends Entity implements Animal
 	private double breedingProbability;
 	private int breedingMax;
 
+	/**
+	 * @param field the field in which the fox is placed
+	 * @param location the location of the fox
+	 */
 	public Fox(Field field, Location location)
 	{
 		super(field, location);
-        
+
+		// get the config from the main config object
 		config = Vossen.config.getAsJson("simulator", "entities", "fox");
 		
 		setColor(new Color(
@@ -39,7 +50,8 @@ public class Fox extends Entity implements Animal
 			config.get("color").getAsJsonArray().get(1).getAsInt(),
 			config.get("color").getAsJsonArray().get(2).getAsInt()
 		));
-		
+
+		// set all parameters
 		age = 0;
 		maxAge = config.get("maximumAge").getAsInt();
 		hunger = 0;
@@ -49,6 +61,9 @@ public class Fox extends Entity implements Animal
 		breedingMax = config.get("breedingMax").getAsInt();
 	}
 
+	/* (non-Javadoc)
+	 * @see vossen.Entity#tick(java.util.List)
+	 */
 	@Override
 	public void tick(List<Entity> newAnimals)
 	{
@@ -78,6 +93,9 @@ public class Fox extends Entity implements Animal
         }
 	}
 	
+	/* (non-Javadoc)
+	 * @see vossen.Animal#incrementAge()
+	 */
 	public void incrementAge()
     {
         age++;
@@ -87,6 +105,9 @@ public class Fox extends Entity implements Animal
         }
     }
 	
+    /* (non-Javadoc)
+     * @see vossen.Animal#incrementHunger()
+     */
     public void incrementHunger()
     {
     	hunger++;
@@ -96,6 +117,9 @@ public class Fox extends Entity implements Animal
         }
     }
     
+    /* (non-Javadoc)
+     * @see vossen.Animal#findFood()
+     */
     public Location findFood()
     {
         Field field = getField();
@@ -121,6 +145,9 @@ public class Fox extends Entity implements Animal
         return null;
     }
     
+    /* (non-Javadoc)
+     * @see vossen.Animal#giveBirth(java.util.List)
+     */
     public void giveBirth(List<Entity> newFoxes)
     {
         Field field = getField();
@@ -136,6 +163,9 @@ public class Fox extends Entity implements Animal
         }
     }
     
+    /* (non-Javadoc)
+     * @see vossen.Animal#breed()
+     */
     public int breed()
     {
         int births = 0;
@@ -148,6 +178,9 @@ public class Fox extends Entity implements Animal
         return births;
     }
     
+    /* (non-Javadoc)
+     * @see vossen.Animal#canBreed()
+     */
     public boolean canBreed()
     {
         return age >= breedingAge;

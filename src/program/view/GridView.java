@@ -14,17 +14,37 @@ import program.Vossen;
 
 import vossen.Entity;
 
+/**
+ * draw a grid based graphical representation of the field
+ * 
+ * @author FakeYou
+ * @version 2012-11-09
+ */
 public class GridView extends JPanel
 {
 	private static final long serialVersionUID = 208243931793745149L;
 	
 	private int pos = 0;
 	
+	/**
+	 * Constructor
+	 */
 	public GridView()
 	{
 		super();
 	}
 	
+	/**
+	 * draws the field with all entities
+	 * 
+	 * @param Graphics g graphics object for awt
+	 */
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	 */
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	 */
 	public void paint(Graphics g)
 	{
 		super.paint(g);
@@ -37,9 +57,13 @@ public class GridView extends JPanel
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.translate(2, 2);
 		
-		double cellHeight = getHeight() / Vossen.FIELD_HEIGHT;
-		double cellWidth = getWidth() / Vossen.FIELD_WIDTH;
+		// calculate the cell size based on panel size and field size
+		double cellHeight = getHeight() / 80;
+		double cellWidth = getWidth() / 80;
 		
+		/*
+		 * loop through all the entities and draw them at their position
+		 */
 		List<Entity> entities = new ArrayList<Entity>();
 		entities.addAll(Vossen.simulator.entities);
 		
@@ -48,6 +72,7 @@ public class GridView extends JPanel
 		{
 			Entity entity = (Entity) it.next();
 			
+			// skip if there isn't a valid entity
 			if(entity == null || entity.getLocation() == null || !entity.isAlive())
 			{
 				continue;
@@ -61,21 +86,5 @@ public class GridView extends JPanel
 			Double point = new Rectangle2D.Double((int) (cellWidth * x), (int) (cellHeight * y), cellWidth, cellHeight);
 			g2d.fill(point);
 		}
-		
-		/*for(int x = 0; x < Main.simulator.field.getWidth(); x++)
-		{
-			for(int y = 0; y < Main.simulator.field.getHeight(); y++)
-			{
-				Entity entity = (Entity) Main.simulator.field.getObjectAt(x, y);
-				
-				if(entity != null)
-				{
-					g2d.setColor(entity.getColor());
-					
-					Double point = new Rectangle2D.Double((int) (cellWidth * x), (int) (cellHeight * y), cellWidth, cellHeight);
-					g2d.fill(point);
-				}
-			}
-		}*/
 	}
 }

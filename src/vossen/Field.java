@@ -8,6 +8,12 @@ import vossen.helpers.Location;
 
 import hanze.vossen.Randomizer;
 
+/**
+ * the field to simulate in
+ * 
+ * @author FakeYou
+ * @version 2012-11-09
+ */
 public class Field
 {
 	private static final Random random = Randomizer.getRandom();
@@ -15,6 +21,10 @@ public class Field
 	private int width, height;
 	private Object[][] field;
 	
+	/**
+	 * @param width width of the field
+	 * @param height height of the field
+	 */
 	public Field(int width, int height)
 	{
 		this.width = width;
@@ -23,26 +33,47 @@ public class Field
 		field = new Object[width][height];
 	}
 	
+	/**
+	 * @param object the object to place
+	 * @param location the location to place at
+	 */
 	public void place(Object object, Location location)
 	{
 		place(object, location.getX(), location.getY());
 	}
 	
+	/**
+	 * @param object the object to place
+	 * @param x the x coordinate to place at
+	 * @param y the y coordinate to place at
+	 */
 	public void place(Object object, int x, int y)
 	{
 		field[x][y] = object;
 	}
 	
+	/**
+	 * @param location location to get an object from
+	 * @return the object found at the given location
+	 */
 	public Object getObjectAt(Location location)
 	{
 		return getObjectAt(location.getX(), location.getY());
 	}
 	
+	/**
+	 * @param x the x coordinate to get an object from
+	 * @param y the y coordinate to get an object from
+	 * @return the object found at the given x, y
+	 */
 	public Object getObjectAt(int x, int y)
 	{		
 		return field[x][y];
 	}
 	
+	/**
+	 * @return the object found at a random location on the field
+	 */
 	public Object getObjectAtRandomLocation()
 	{
 		int x = random.nextInt(getWidth());
@@ -51,11 +82,24 @@ public class Field
 		return field[x][y];
 	}
 	
+	/**
+	 * get a random location, occupied or not, adjacent to the given location
+	 * 
+	 * @param location the location
+	 * @return the random location
+	 */
 	public Location getRandomAdjacentLocation(Location location)
 	{
 		return GetRandomAdjacentLocation(location.getX(), location.getY());
 	}
 	
+	/**
+	 * get a random location, occupied or not, adjacent to the given location
+	 * 
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return the random location
+	 */
 	public Location GetRandomAdjacentLocation(int x, int y)
 	{
 		List<Location> adjacent = getAdjacentLocations(x, y);
@@ -65,11 +109,24 @@ public class Field
 		return adjacent.get(location);
 	}
 	
+	/**
+	 * get adjacent locations which aren't occupied
+	 * 
+	 * @param location the location
+	 * @return a list of location adjacent to the given location which are free
+	 */
 	public List<Location> getFreeAdjacentLocations(Location location)
 	{
 		return getFreeAdjacentLocations(location.getX(), location.getY());
 	}
 	
+	/**
+	 * get adjacent locations which aren't occupied
+	 * 
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return a list of location adjacent to the given location which are free
+	 */
 	public List<Location> getFreeAdjacentLocations(int x, int y)
 	{
 		List<Location> free = new LinkedList<Location>();
@@ -77,8 +134,7 @@ public class Field
 		
 		for(Location location : adjacent)
 		{
-			boolean bool = (getObjectAt(location) == null);
-			if(bool)
+			if(getObjectAt(location) == null)
 			{
 				free.add(location);
 			}
@@ -87,11 +143,24 @@ public class Field
 		return free;
 	}
 
+	/**
+	 * get a random location, which isn't occupied, adjacent to the given location
+	 * 
+	 * @param location the given location
+	 * @return random location
+	 */
 	public Location getFreeRandomAdjacentLocation(Location location)
 	{
 		return getFreeRandomAdjacentLocation(location.getX(), location.getY());
 	}
-	
+
+	/**
+	 * get a random location, which isn't occupied, adjacent to the given location
+	 * 
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return random location
+	 */
 	public Location getFreeRandomAdjacentLocation(int x, int y)
 	{
 		List<Location> adjacent = getFreeAdjacentLocations(x, y);
@@ -105,22 +174,25 @@ public class Field
 		
 		return adjacent.get(location);
 	}
-	
-	public List<Location> getAdjacentLocation(Location location)
-	{
-		if(location == null)
-		{
-			return new LinkedList<Location>();
-		}
-		
-		return getAdjacentLocations(location.getX(), location.getY());
-	}
 
+	/**
+	 * get all locations adjacent to the given location
+	 * 
+	 * @param location the given location
+	 * @return a list of locations adjacent
+	 */
 	public List<Location> getAdjacentLocations(Location location)
 	{
 		return getAdjacentLocations(location.getX(), location.getY());
 	}
-	
+
+	/**
+	 * get all locations adjacent to the given location
+	 * 
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return a list of locations adjacent
+	 */
 	public List<Location> getAdjacentLocations(int x, int y)
 	{
 		List<Location> locations = new LinkedList<Location>();
@@ -155,6 +227,9 @@ public class Field
 		return locations;
 	}
 	
+	/**
+	 * set all items in field to null
+	 */
 	public void clear()
 	{
 		for(int x = 0; x < width; x++)
@@ -166,21 +241,34 @@ public class Field
 		}
 	}
 	
+	/**
+	 * @param location the location to clear
+	 */
 	public void clear(Location location)
 	{
 		clear(location.getX(), location.getY());
 	}
 	
+	/**
+	 * @param x the x coordinate to clear
+	 * @param y the y coordinate to clear
+	 */
 	public void clear(int x, int y)
 	{
 		field[x][y] = null;
 	}
 	
+	/**
+	 * @return the width of the field
+	 */
 	public int getWidth()
 	{
 		return width;
 	}
 	
+	/**
+	 * @return the height of the field
+	 */
 	public int getHeight()
 	{
 		return height;

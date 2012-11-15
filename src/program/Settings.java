@@ -5,14 +5,11 @@ import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -21,15 +18,23 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import program.helpers.Json;
-import vossen.Entity;
 import javax.swing.JButton;
 
+/**
+ * Settings panel for the simulation
+ * 
+ * @author FakeYou
+ * @version 2012-11-14
+ */
 public class Settings
 {
 	private JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
 
+	/**
+	 * Constructor for the settings, builds the settings frame
+	 */
 	public Settings()
 	{
 		frame = new JFrame();
@@ -57,7 +62,7 @@ public class Settings
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
+ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
@@ -80,6 +85,9 @@ public class Settings
 		SimulatorPanel.add(textField_1, "4, 4, left, default");
 		textField_1.setColumns(10);
 
+		/*
+		 * for every entity in the config we make a tab with the necessary settings for that entity
+		 */
 		Json entities = Vossen.config.getAsJson("simulator", "entities");
 		
 		for(Entry<String, JsonElement> entry : entities.getObject().entrySet())

@@ -17,11 +17,22 @@ import program.view.GridView;
 import program.view.LineView;
 import program.view.PieView;
 
+
+/**
+ * Creates a jframe with the base interface in it
+ * 
+ * @author FakeYou
+ * @version 2012-11-14
+ */
 public class UI
 {
 	public JFrame frame;
 	private JTabbedPane tabbedPane;
 
+	
+	/**
+	 * Contstructor, the interface in built here
+	 */
 	public UI()
 	{
 		frame = new JFrame();
@@ -32,6 +43,7 @@ public class UI
 		frame.setTitle("Vossen en Konijnen");
 		frame.setVisible(true);
 		
+		// top menu bar
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
@@ -63,6 +75,16 @@ public class UI
 			}
 		});
 		
+		JMenuItem mntmSteps = new JMenuItem("100 stappen");
+		mnSimulator.add(mntmSteps);
+		mntmSteps.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Vossen.simulate = true;
+				Vossen.simulateSteps = 10;			
+			}
+		});
+		
 		JMenuItem mntmReset = new JMenuItem("Reset");
 		mnSimulator.add(mntmReset);
 		mntmReset.addActionListener(new ActionListener() {
@@ -88,6 +110,7 @@ public class UI
 		});
 		
 		
+		// This tabbedPane contains all different views
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		

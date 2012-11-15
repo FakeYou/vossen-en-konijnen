@@ -15,6 +15,12 @@ import vossen.Entity;
 import vossen.Field;
 import vossen.helpers.Location;
 
+/**
+ * An eagle animal entity, a scarse animal who live long and eat both rabbits and foxes
+ * 
+ * @author Ward Holthof
+ * @version 2012-11-14
+ */
 public class Eagle extends Entity implements Animal
 {
 	private Json config;
@@ -28,10 +34,15 @@ public class Eagle extends Entity implements Animal
 	private double breedingProbability;
 	private int breedingMax;
 	
+	/**
+	 * @param field the field where the eagle is placed in
+	 * @param location the location of the eagle
+	 */
 	public Eagle(Field field, Location location)
 	{
 		super(field, location);
 
+		// get the config from the main config object
 		config = Vossen.config.getAsJson("simulator", "entities", "eagle");
 		
 		setColor(new Color(
@@ -40,6 +51,7 @@ public class Eagle extends Entity implements Animal
 			config.get("color").getAsJsonArray().get(2).getAsInt()
 		));
 
+		// set all parameters
 		age = 0;
 		maxAge = config.get("maximumAge").getAsInt();
 		hunger = 0;
@@ -49,7 +61,9 @@ public class Eagle extends Entity implements Animal
 		breedingMax = config.get("breedingMax").getAsInt();
 	}
 
-	@Override
+	/* (non-Javadoc)
+	 * @see vossen.Entity#tick(java.util.List)
+	 */
 	public void tick(List<Entity> newAnimals)
 	{
 		config = Vossen.config.getAsJson("simulator", "entities", "eagle");
@@ -78,6 +92,9 @@ public class Eagle extends Entity implements Animal
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see vossen.Animal#incrementAge()
+	 */
 	public void incrementAge()
     {
         age++;
@@ -87,6 +104,9 @@ public class Eagle extends Entity implements Animal
         }
     }
 	
+    /* (non-Javadoc)
+     * @see vossen.Animal#incrementHunger()
+     */
     public void incrementHunger()
     {
     	hunger++;
@@ -96,6 +116,9 @@ public class Eagle extends Entity implements Animal
         }
     }
     
+    /* (non-Javadoc)
+     * @see vossen.Animal#findFood()
+     */
     public Location findFood()
     {
     	/*if(hunger < 100)
@@ -142,6 +165,9 @@ public class Eagle extends Entity implements Animal
         return null;
     }
     
+    /* (non-Javadoc)
+     * @see vossen.Animal#giveBirth(java.util.List)
+     */
     public void giveBirth(List<Entity> newFoxes)
     {
         Field field = getField();
@@ -157,6 +183,9 @@ public class Eagle extends Entity implements Animal
         }
     }
     
+    /* (non-Javadoc)
+     * @see vossen.Animal#breed()
+     */
     public int breed()
     {
         int births = 0;
@@ -169,6 +198,9 @@ public class Eagle extends Entity implements Animal
         return births;
     }
     
+    /* (non-Javadoc)
+     * @see vossen.Animal#canBreed()
+     */
     public boolean canBreed()
     {
         return age >= breedingAge;

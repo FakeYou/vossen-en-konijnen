@@ -13,6 +13,12 @@ import vossen.entities.Rabbit;
 import vossen.helpers.Location;
 import vossen.helpers.Randomizer;
 
+/**
+ * The simulator class where the entities are simulated with a field
+ * 
+ * @author FakeYou
+ * @version 2012-11-10
+ */
 public class Simulator
 {
 	private static final int FIELD_WIDTH = 10;
@@ -28,11 +34,20 @@ public class Simulator
 	public Field field;
 	public int step;
 	
+	/**
+	 * Make field with the default values
+	 */
 	public Simulator()
 	{
 		this(FIELD_WIDTH, FIELD_HEIGHT);
 	}
 	
+	/**
+	 * constructor, make a field and an empty list of entities
+	 * 
+	 * @param width width of the field
+	 * @param height height of the field
+	 */
 	public Simulator(int width, int height)
 	{		
 		if(width <= 0 || height <= 0)
@@ -47,6 +62,11 @@ public class Simulator
 		reset();
 	}
 	
+	/**
+	 * simulate the simulator for a defined amount of steps
+	 * 
+	 * @param steps amount of steps to simulate
+	 */
 	public void simulate(int steps)
 	{
 		for(int step = 0; step < steps; step++)
@@ -55,6 +75,9 @@ public class Simulator
 		}
 	}
 	
+	/**
+	 * simulate one step. Every entity is called once a step to do an act. Dead entities are removed
+	 */
 	public void simulate()
 	{
 		step += 1;
@@ -75,9 +98,15 @@ public class Simulator
 			}
 		}
 		
+		// add all new entities to the list of entities
 		entities.addAll(newEntities);
 	}
 	
+	/**
+	 * count the entities based on type
+	 * 
+	 * @return A count of all entities based on type
+	 */
 	public HashMap<String, Integer> countEntities()
 	{		
 		Iterator<Entity> it = entities.iterator();
@@ -92,17 +121,22 @@ public class Simulator
 				continue;
 			}
 			
+			// create a new entry and set it to zero
 			if(!count.containsKey(entity.getClass().toString()))
 			{
 				count.put(entity.getClass().toString(), 0);
 			}
 			
+			// get an existing entry and add 1
 			count.put(entity.getClass().toString(), count.get(entity.getClass().toString()) + 1);
 		}
 		
 		return count;
 	}
 	
+	/**
+	 * reset the simulator, set step to 0, clear the entities and repopulate the field
+	 */
 	public void reset()
 	{
 		step = 0;
@@ -110,6 +144,9 @@ public class Simulator
 		populate();		
 	}
 	
+	/**
+	 * populate the field with entities, each entity type has a given probability to be created
+	 */
 	public void populate()
 	{
 		Random random = Randomizer.getRandom();
@@ -120,6 +157,9 @@ public class Simulator
 		{
 			for(int y = 0; y < field.getHeight(); y++)
 			{
+				/*
+				 * test the probability to create an entity at the current location
+				 */
 				if(random.nextDouble() <= FOX_CREATION_PROBABLITY)
 				{
 					Location location = new Location(x, y);

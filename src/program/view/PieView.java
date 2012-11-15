@@ -1,31 +1,24 @@
 package program.view;
 
 import java.awt.Graphics;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.plot.PiePlot3D;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.CategoryToPieDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.category.SlidingCategoryDataset;
-import org.jfree.data.general.DatasetGroup;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
-import org.jfree.util.Rotation;
 import org.jfree.util.TableOrder;
 
 import program.Vossen;
 
+/**
+ * draws a piechart with the short term simulation data, providing a quick view in the ratios of the entities
+ * 
+ * @author FakeYou
+ * @version 2012-11-15
+ */
 public class PieView extends JPanel
 {
 	private static final long serialVersionUID = 6549863187908510082L;
@@ -33,7 +26,10 @@ public class PieView extends JPanel
 	private DefaultCategoryDataset dataset;
 	private SlidingCategoryDataset slide;
 	private JFreeChart chart;
-
+	
+	/**
+	 * Constructor, make a piechart from the JFreeChart library and assign it the short term simulator data
+	 */
 	public PieView()
 	{
 		super();
@@ -58,6 +54,11 @@ public class PieView extends JPanel
         this.validate();
 	}
 	
+	/**
+	 * updates the dataset used in the piechart
+	 * 
+	 * @param g Graphics opbject
+	 */	
 	public void paint(Graphics g)
 	{
 		super.paint(g);		

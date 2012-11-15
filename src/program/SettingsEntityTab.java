@@ -3,7 +3,6 @@ package program;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,6 +16,12 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
+/**
+ * A settings tab for each entity
+ * 
+ * @author FakeYou
+ * @verison 2012-11-14
+ */
 public class SettingsEntityTab extends JPanel
 {
 	private static final long serialVersionUID = -6423306637988661901L;
@@ -29,6 +34,12 @@ public class SettingsEntityTab extends JPanel
 	
 	public String entity;
 	
+	/**
+	 * Makes a settings tab for a given entity
+	 * 
+	 * @param entity name of the entity
+	 * @param settings json object with the settings of this entity
+	 */
 	public SettingsEntityTab(final String entity, Json settings)
 	{
 		this.entity = entity;

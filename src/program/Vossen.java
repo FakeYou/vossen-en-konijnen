@@ -15,19 +15,19 @@ import javax.swing.JLabel;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 
+
+/**
+ * Main class, this class runs the main program loop where all the operations of the program are executed
+ * 
+ * @author FakeYou
+ * @version 2012-11-15
+ */
 public class Vossen extends JFrame
 {
 	private static final long serialVersionUID = 1186051179116663399L;
 
+	// Json config worker
 	public static Json config = new Json();
-	
-	public static final String TITLE = "Vossen en konijnen 0.1";
-	
-	public static final int FIELD_WIDTH = 80;
-	public static final int FIELD_HEIGHT = 60;
-	
-	public static final int SCREEN_WIDTH = 640;
-	public static final int SCREEN_HEIGHT = 480;
 	
 	public static Simulator simulator;
 	public static boolean simulate;
@@ -38,65 +38,44 @@ public class Vossen extends JFrame
 	
 	private JLabel lblSteps;
 
+	// long term simulation data
 	private static DefaultCategoryDataset dataset;
+	// short teem simulation data
 	private static DefaultCategoryDataset singleDataset;
 	
+	/**
+	 * Contstructor, the config is loaded, simulator started and UI built
+	 */
 	public Vossen()
 	{
+		// load json file
 		config.loadFile("/config/config.json");
 		
 		running = true;
 		simulate = false;
 		simulateSteps = 0;
-		simulator = new Simulator(FIELD_WIDTH, FIELD_HEIGHT);
+		simulator = new Simulator(80, 80); // create new simulator with a 80x80 field
 		simulator.reset();
 
 		dataset = new DefaultCategoryDataset();
 		singleDataset = new DefaultCategoryDataset();
 		
+		// create the UserInterface
 		ui = new UI();
 		
+		// start the main execution loop
 		loop();		
 	}
 	
-	public static void updateStats()
-	{		
-		singleDataset.clear();
-		
-		HashMap<String, Integer> count = Vossen.simulator.countEntities();
-		
-		Iterator<Entry<String, Integer>> it = count.entrySet().iterator();
-		
-		while(it.hasNext())
-		{
-			Map.Entry entry = (Map.Entry) it.next();
-			
-			dataset.addValue((Number) entry.getValue(), entry.getKey().toString(), Vossen.simulator.step);
-			singleDataset.addValue((Number) entry.getValue(), entry.getKey().toString(), 0);			
-		}
-	}
-	
-	public static DefaultCategoryDataset getStats()
-	{
-		return dataset;
-	}
-	
-	public static DefaultCategoryDataset getSingleStats()
-	{
-		return singleDataset;
-	}
-	
-	public static void resetStats()
-	{
-		dataset.clear();
-	}
-	
+	/**
+	 * The main program loop. All necessary program section all handled here
+	 */
 	public void loop()
 	{
 		long tick = System.nanoTime();
 		long ticks = 0;
 		long totalTicks = 0;
-		int ticksPerSecond = 60;
+		int ticksPerSecond = 30;
 		long deltaSinceUpdate = 0;
 		
 		while(running)
@@ -105,6 +84,7 @@ public class Vossen extends JFrame
 			tick = System.nanoTime();
 			deltaSinceUpdate += delta;
 			
+			// check if its time to simulate another step based on the ticksPerSecond
 			if(simulate && deltaSinceUpdate > 1000 / ticksPerSecond)
 			{
 				totalTicks += 1;
@@ -112,6 +92,7 @@ public class Vossen extends JFrame
 				simulator.simulate();
 				simulateSteps -= 1;
 				
+				// stop the simulator if not entities are left
 				if(simulator.entities.isEmpty())
 				{
 					System.out.println("stopped at: " + totalTicks);
@@ -122,17 +103,66 @@ public class Vossen extends JFrame
 				updateStats();
 			}
 
+			// repaint the views with the new data
 			ui.frame.repaint();
 			
+			// pause the simulation if the given steps are done
 			if(simulateSteps <= 0)
 			{
 				simulate = false;
 			}
-			
-			//ui.lblSteps.setText("steps: " + totalTicks);
 		}
 	}
 	
+	/**
+	 * Update the long term and short term simulation data for the views
+	 */
+	public static void updateStats()
+	{		
+		singleDataset.clear();
+		
+		HashMap<String, Integer> count = Vossen.simulator.countEntities();
+		
+		Iterator<Entry<String, Integer>> it = count.entrySet().iterator();
+		while(it.hasNext())
+		{
+			Map.Entry entry = (Map.Entry) it.next();
+			
+			dataset.addValue((Number) entry.getValue(), entry.getKey().toString(), Vossen.simulator.step);
+			singleDataset.addValue((Number) entry.getValue(), entry.getKey().toString(), 0);			
+		}
+	}
+	
+	/**
+	 * @return returns the long term simulation data
+	 */
+	public static DefaultCategoryDataset getStats()
+	{
+		return dataset;
+	}
+	
+	/**
+	 * @return returns the short them simulator data
+	 */
+	public static DefaultCategoryDataset getSingleStats()
+	{
+		return singleDataset;
+	}
+	
+	/**
+	 * resets the stats
+	 */
+	public static void resetStats()
+	{
+		dataset.clear();
+		singleDataset.clear();
+	}
+	
+	/**
+	 * Main
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		new Vossen();
