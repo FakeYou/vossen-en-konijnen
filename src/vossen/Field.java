@@ -43,6 +43,14 @@ public class Field
 		return field[x][y];
 	}
 	
+	public Object getObjectAtRandomLocation()
+	{
+		int x = random.nextInt(getWidth());
+		int y = random.nextInt(getHeight());
+		
+		return field[x][y];
+	}
+	
 	public Location getRandomAdjacentLocation(Location location)
 	{
 		return GetRandomAdjacentLocation(location.getX(), location.getY());

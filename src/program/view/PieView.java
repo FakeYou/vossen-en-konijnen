@@ -13,9 +13,12 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.CategoryToPieDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.category.SlidingCategoryDataset;
+import org.jfree.data.general.DatasetGroup;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
@@ -26,30 +29,28 @@ import program.Vossen;
 public class PieView extends JPanel
 {
 	private static final long serialVersionUID = 6549863187908510082L;
-	private int i;
 	private ChartPanel chartPanel;
 	private DefaultCategoryDataset dataset;
-	private PieDataset d;
-	private CategoryToPieDataset piedataset;
+	private SlidingCategoryDataset slide;
+	private JFreeChart chart;
 
 	public PieView()
 	{
 		super();
 		
-		JFreeChart chart = ChartFactory.createPieChart(
-				"",          			// chart title
-	            piedataset, 
-	            true,                   // include legend
-	            true,
-	            false
+		dataset = Vossen.getSingleStats();
+		
+		chart = ChartFactory.createMultiplePieChart(
+			"",
+			dataset,
+            TableOrder.BY_COLUMN, 
+            true,
+            true,
+            false
 	    );
-		
-		/*PiePlot3D plot = (PiePlot3D) chart.getPlot();
-		
-        plot.setStartAngle(290);
-        plot.setDirection(Rotation.CLOCKWISE);
-        plot.setForegroundAlpha(0.5f);*/
         
+		chart.setNotify(false);
+		
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(400, 300));
         
@@ -60,18 +61,8 @@ public class PieView extends JPanel
 	public void paint(Graphics g)
 	{
 		super.paint(g);		
-		
-		try
-		{
-			dataset = (DefaultCategoryDataset) Vossen.getStats().clone();
-		}
-		catch (CloneNotSupportedException e)
-		{
-			e.printStackTrace();
-		}
-		
-		piedataset = new CategoryToPieDataset(dataset, TableOrder.BY_ROW, dataset.getRowCount() - 1);
-		
-		chartPanel.revalidate();
+		chart.setNotify(true);
+		dataset = Vossen.getSingleStats();
+		chart.setNotify(false);
 	}
 }

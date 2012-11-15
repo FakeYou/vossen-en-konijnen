@@ -63,7 +63,7 @@ public class SettingsEntityTab extends JPanel
 		this.add(lblMaximumLeeftijd, "2, 6, right, default");
 		
 		txtMaxAge = new JTextField();
-		txtMaxAge.setText(settings.get("maximumAge").toString());
+		txtMaxAge.setText(String.valueOf(settings.get("maximumAge").getAsInt()));
 		this.add(txtMaxAge, "4, 6, left, default");
 		txtMaxAge.setColumns(10);
 		txtMaxAge.getDocument().addDocumentListener(new DocumentListener()
@@ -86,7 +86,7 @@ public class SettingsEntityTab extends JPanel
 		this.add(lblFokLeeftijd, "2, 8, right, default");
 		
 		txtBreedAge = new JTextField();
-		txtBreedAge.setText(settings.get("breedingAge").toString());
+		txtBreedAge.setText(String.valueOf(settings.get("breedingAge").getAsInt()));
 		this.add(txtBreedAge, "4, 8, left, default");
 		txtBreedAge.setColumns(10);
 		txtBreedAge.addActionListener(new ActionListener()
@@ -101,7 +101,7 @@ public class SettingsEntityTab extends JPanel
 		this.add(lblFokKans, "2, 10, right, default");
 		
 		txtBreedProbability = new JTextField();
-		txtBreedProbability.setText(settings.get("breedingProbability").toString());
+		txtBreedProbability.setText(String.valueOf(settings.get("breedingProbability").getAsDouble()));
 		this.add(txtBreedProbability, "4, 10, left, default");
 		txtBreedProbability.setColumns(10);
 		txtBreedProbability.getDocument().addDocumentListener(new DocumentListener()
@@ -114,7 +114,7 @@ public class SettingsEntityTab extends JPanel
 			{
 				try
 				{
-					Vossen.config.set(Integer.valueOf(txtBreedProbability.getText()), "simulator", "entities", entity, "breedingProbability");
+					Vossen.config.set(Double.valueOf(txtBreedProbability.getText()), "simulator", "entities", entity, "breedingProbability");
 				}
 				catch(NumberFormatException e) {}
 			}
@@ -124,7 +124,7 @@ public class SettingsEntityTab extends JPanel
 		this.add(lblFokAantal, "2, 12, right, default");
 		
 		txtBreedMax = new JTextField();
-		txtBreedMax.setText(settings.get("breedingMax").toString());
+		txtBreedMax.setText(String.valueOf(settings.get("breedingMax").getAsInt()));
 		this.add(txtBreedMax, "4, 12, left, default");
 		txtBreedMax.setColumns(10);
 		txtBreedMax.getDocument().addDocumentListener(new DocumentListener()
@@ -147,7 +147,7 @@ public class SettingsEntityTab extends JPanel
 		this.add(lblHongerUithouding, "2, 14, right, default");
 		
 		txtHungerEndurance = new JTextField();
-		txtHungerEndurance.setText(settings.get("hungerEndurance").toString());
+		txtHungerEndurance.setText(String.valueOf(settings.get("hungerEndurance").getAsInt()));
 		this.add(txtHungerEndurance, "4, 14, left, default");
 		txtHungerEndurance.setColumns(10);
 		txtHungerEndurance.getDocument().addDocumentListener(new DocumentListener()
@@ -170,7 +170,7 @@ public class SettingsEntityTab extends JPanel
 		this.add(lblSpawnKans, "2, 16, right, default");
 		
 		txtCreationProbability = new JTextField();
-		txtCreationProbability.setText(settings.get("creationProbability").toString());
+		txtCreationProbability.setText(String.valueOf(settings.get("creationProbability").getAsDouble()));
 		this.add(txtCreationProbability, "4, 16, left, default");
 		txtCreationProbability.setColumns(10);
 		txtCreationProbability.getDocument().addDocumentListener(new DocumentListener()
@@ -183,7 +183,7 @@ public class SettingsEntityTab extends JPanel
 			{
 				try
 				{
-					Vossen.config.set(Integer.valueOf(txtCreationProbability.getText()), "simulator", "entities", entity, "creationProbability");
+					Vossen.config.set(Double.valueOf(txtCreationProbability.getText()), "simulator", "entities", entity, "creationProbability");
 				}
 				catch(NumberFormatException e) {}
 			}

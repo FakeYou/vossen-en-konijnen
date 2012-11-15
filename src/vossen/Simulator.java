@@ -8,6 +8,7 @@ import java.util.Random;
 
 import vossen.entities.Eagle;
 import vossen.entities.Fox;
+import vossen.entities.Hunter;
 import vossen.entities.Rabbit;
 import vossen.helpers.Location;
 import vossen.helpers.Randomizer;
@@ -20,6 +21,7 @@ public class Simulator
 	private static final double FOX_CREATION_PROBABLITY = 0.02;
 	private static final double RABBIT_CREATION_PROBABLITY = 0.08;
 	private static final double EAGLE_CREATION_PROBABLITY = 0.001;
+	private static final double HUNTER_CREATION_PROBABLITY = 0.001;
 	
 	
 	public List<Entity> entities;
@@ -135,6 +137,12 @@ public class Simulator
 					Location location = new Location(x, y);
 					Eagle eagle = new Eagle(field, location);
 					entities.add(eagle);
+				}
+				else if(random.nextDouble() <= HUNTER_CREATION_PROBABLITY)
+				{
+					Location location = new Location(x, y);
+					Hunter hunter = new Hunter(field, location);
+					entities.add(hunter);
 				}
 			}
 		}

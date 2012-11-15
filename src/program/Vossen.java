@@ -1,30 +1,16 @@
 
 package program;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import vossen.Simulator;
 
-import javax.swing.border.BevelBorder;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import program.helpers.Json;
-import program.view.PieView;
-import program.view.LineView;
-import program.view.GridView;
 import javax.swing.JLabel;
 
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -53,6 +39,7 @@ public class Vossen extends JFrame
 	private JLabel lblSteps;
 
 	private static DefaultCategoryDataset dataset;
+	private static DefaultCategoryDataset singleDataset;
 	
 	public Vossen()
 	{
@@ -65,6 +52,7 @@ public class Vossen extends JFrame
 		simulator.reset();
 
 		dataset = new DefaultCategoryDataset();
+		singleDataset = new DefaultCategoryDataset();
 		
 		ui = new UI();
 		
@@ -73,6 +61,8 @@ public class Vossen extends JFrame
 	
 	public static void updateStats()
 	{		
+		singleDataset.clear();
+		
 		HashMap<String, Integer> count = Vossen.simulator.countEntities();
 		
 		Iterator<Entry<String, Integer>> it = count.entrySet().iterator();
@@ -82,12 +72,23 @@ public class Vossen extends JFrame
 			Map.Entry entry = (Map.Entry) it.next();
 			
 			dataset.addValue((Number) entry.getValue(), entry.getKey().toString(), Vossen.simulator.step);
+			singleDataset.addValue((Number) entry.getValue(), entry.getKey().toString(), 0);			
 		}
 	}
 	
 	public static DefaultCategoryDataset getStats()
 	{
 		return dataset;
+	}
+	
+	public static DefaultCategoryDataset getSingleStats()
+	{
+		return singleDataset;
+	}
+	
+	public static void resetStats()
+	{
+		dataset.clear();
 	}
 	
 	public void loop()
@@ -130,70 +131,6 @@ public class Vossen extends JFrame
 			
 			//ui.lblSteps.setText("steps: " + totalTicks);
 		}
-	}
-	
-	public void ui(JFrame frame)
-	{
-		JPanel sidepanel = new JPanel();
-		sidepanel.setBounds(10, 11, 148, 420);
-		
-		JButton btnStartSimulatie = new JButton("Start");
-		btnStartSimulatie.setBounds(10, 5, 133, 23);
-		btnStartSimulatie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				Vossen.simulate = true;
-				Vossen.simulateSteps = Integer.MAX_VALUE;
-			}
-		});
-		sidepanel.add(btnStartSimulatie);
-		
-		JButton btnStopSimulatie = new JButton("Pauze");
-		btnStopSimulatie.setBounds(10, 33, 133, 23);
-		btnStopSimulatie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				Vossen.simulate = false;
-			}
-		});
-		sidepanel.add(btnStopSimulatie);
-		
-		JButton btnStepSimulatie = new JButton("1 stap");
-		btnStepSimulatie.setBounds(10, 61, 133, 23);
-		btnStepSimulatie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				Vossen.simulate = true;
-				Vossen.simulateSteps = 1;
-			}
-		});
-		sidepanel.add(btnStepSimulatie);
-		
-		JButton btnResetSimulatie = new JButton("Reset");
-		btnResetSimulatie.setBounds(10, 140, 133, 23);
-		btnResetSimulatie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				Vossen.simulate = false;
-				Vossen.simulateSteps = 0;
-				
-				Vossen.simulator.reset();
-			}
-		});
-		sidepanel.add(btnResetSimulatie);
-		
-		lblSteps = new JLabel("Steps: 0");
-		lblSteps.setBounds(10, 395, 128, 14);
-		sidepanel.add(lblSteps);
-		
-		frame.getContentPane().add(sidepanel, BorderLayout.WEST);
-		sidepanel.setLayout(new BorderLayout());
-		
-		JPanel panel = new JPanel();
-		panel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(168, 11, 446, 420);
-		frame.getContentPane().add(panel, BorderLayout.EAST);
 	}
 	
 	public static void main(String[] args)

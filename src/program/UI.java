@@ -71,6 +71,7 @@ public class UI
 				Vossen.simulate = false;
 				Vossen.simulateSteps = 0;
 				Vossen.simulator.reset();
+				Vossen.resetStats();
 			}
 		});
 		
